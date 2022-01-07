@@ -7,15 +7,21 @@
  */
 
 import React from 'react';
-import {SafeAreaView} from 'react-native';
 import Top from './src/screens/Top';
-import {createStackNavigator} from '@react-navigation/stack';
+import Chat from './src/screens/Chat';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <Top />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Top" component={Top} />
+        <Stack.Screen name="Chat" component={Chat} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

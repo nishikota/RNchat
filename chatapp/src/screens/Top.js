@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
-const Top = () => {
+const Top = ({navigation}) => {
   return (
     <View>
-      <Text>Top</Text>
+      <Text>Are you OK ?</Text>
+      <Text>Let's Talk !</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+        <Text>OK!</Text>
+      </TouchableOpacity>
     </View>
   );
 };
