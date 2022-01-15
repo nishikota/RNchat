@@ -1,16 +1,14 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const ChatMsg = value => {
-  console.log(value);
+const ChatMsg = ({value}) => {
   return (
     <View>
-      <Text>1111</Text>
       <Text>
-        {value.value.sendTime}
-        <Text>{value.value.name}</Text>
+        {value.sendTime}
+        <Text>{value.name}</Text>
       </Text>
-      <Text style={styles.msgContent}>{value.value.msg}</Text>
+      <Text style={styles.msgContent}>{value.msg}</Text>
     </View>
   );
 };

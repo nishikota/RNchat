@@ -1,21 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 
-export const registrationDB = (msg, name) => {
-  const nowTime = new Date().toLocaleString();
-  firestore()
-    .collection('chat')
-    .add({
-      sendTime: nowTime,
-      msg: msg,
-      name: name.name,
-    })
-    .then(() => {
-      console.log('add DB');
-    });
-};
-
 export const getDBdata = async () => {
-  console.log('get');
+  // console.log('get');
   let refData = [];
   await firestore()
     .collection('chat')
@@ -28,4 +14,13 @@ export const getDBdata = async () => {
       });
     });
   return refData;
+};
+
+export const registrationDB = (msg, name) => {
+  const nowTime = new Date().toLocaleString();
+  firestore().collection('chat').add({
+    sendTime: nowTime,
+    msg: msg,
+    name: name,
+  });
 };
