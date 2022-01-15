@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {getDBdata} from '../api/Database';
 
 const welcomeMsg = name => {
   if (name) {
-    console.log('ok');
     return (
       <View style={styles.welcomeMsgWrapper}>
         <Text style={styles.welcomeMsgName}>{`OK ${name} !`}</Text>
@@ -12,7 +12,6 @@ const welcomeMsg = name => {
       </View>
     );
   } else {
-    console.log('no');
     return (
       <View>
         <Text />
@@ -24,6 +23,12 @@ const welcomeMsg = name => {
 
 const Top = ({navigation}) => {
   const [name, setName] = useState('');
+  const buttonMove = async () => {
+    const firstDBdata = await getDBdata();
+    if (firstDBdata) {
+      navigation.navigate('Chat', {name: name, firstDBdata: firstDBdata});
+    }
+  };
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>Who are you ?</Text>
@@ -35,12 +40,9 @@ const Top = ({navigation}) => {
           style={styles.inputArea}
         />
       </View>
-      {console.log(name)}
       {welcomeMsg(name)}
       {name ? (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Chat', {name: name})}
-          style={styles.button}>
+        <TouchableOpacity onPress={() => buttonMove()} style={styles.button}>
           <Text style={styles.buttonMsg}>Enter</Text>
         </TouchableOpacity>
       ) : (

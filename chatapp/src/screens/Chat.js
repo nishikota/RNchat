@@ -1,18 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {getDBdata, registrationDB} from '../api/Database';
+import ChatMsg from '../components/Msg';
 
 const Chat = ({route}) => {
   const [inputContent, setInputContent] = useState('');
-  const name = route.params;
+  const [msg, setMsg] = useState([]);
+  const {name, firstDBdata} = route.params;
   const buttonMove = () => {
     registrationDB(inputContent, name);
-    getDBdata();
     setInputContent('');
+    getDBdata();
+    setMsg(getDBdata());
   };
+  const msgRope = data => {
+    return (
+      <View>
+        {console.log(data)}
+        {data.map((value, i) => (
+          <ChatMsg value={value} key={i} />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View style={styles.wrapper}>
-      <Text>Chat</Text>
+      {msg === [] ? msgRope(msg) : msgRope(firstDBdata)}
       <TextInput onChangeText={setInputContent} value={inputContent} />
       <TouchableOpacity onPress={() => buttonMove()}>
         <Text>Send</Text>
@@ -20,7 +34,6 @@ const Chat = ({route}) => {
     </View>
   );
 };
-
 export default Chat;
 
 const styles = {

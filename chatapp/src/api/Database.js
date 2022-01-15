@@ -1,8 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 
-export const registrationDB = async (msg, name) => {
+export const registrationDB = (msg, name) => {
   const nowTime = new Date().toLocaleString();
-  console.log('registration:', msg);
   firestore()
     .collection('chat')
     .add({
@@ -17,10 +16,16 @@ export const registrationDB = async (msg, name) => {
 
 export const getDBdata = async () => {
   console.log('get');
+  let refData = [];
   await firestore()
     .collection('chat')
-    .doc('gugV7yk4V1Wt08s2AYUL')
-    .onSnapshot(documentSnapshot => {
-      console.log('documentSnapshot:', documentSnapshot.data().msg);
+    .limit(3)
+    .orderBy('sendTime', 'desc')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        refData.push(doc.data());
+      });
     });
+  return refData;
 };
