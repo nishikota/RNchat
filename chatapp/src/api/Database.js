@@ -1,11 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 
 export const getDBdata = async () => {
-  // console.log('get');
   let refData = [];
   await firestore()
     .collection('chat')
-    .limit(3)
+    .limit(20)
     .orderBy('sendTime', 'desc')
     .get()
     .then(querySnapshot => {

@@ -3,12 +3,14 @@ import {View, Text} from 'react-native';
 
 const ChatMsg = ({value}) => {
   return (
-    <View>
-      <Text>
+    <View style={styles.wrapper}>
+      <Text style={styles.time}>
         {value.sendTime}
-        <Text>{value.name}</Text>
+        <Text style={styles.name}>{value.name}</Text>
       </Text>
-      <Text style={styles.msgContent}>{value.msg}</Text>
+      <View style={styles.msgWrapper}>
+        <Text style={styles.msgContent}>{value.msg}</Text>
+      </View>
     </View>
   );
 };
@@ -16,20 +18,27 @@ const ChatMsg = ({value}) => {
 export default ChatMsg;
 
 const styles = {
+  wrapper: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  msgWrapper: {
+    backgroundColor: '#F89C86',
+    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderWidth: 1,
+    borderColor: '#0052B2',
+  },
   msgContent: {
     color: 'black',
+    fontSize: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
   },
-  title: {
-    backgroundColor: '#0052B2',
+  time: {
     color: 'white',
-    fontSize: 30,
-    margin: 'auto',
   },
-  button: {
-    backgroundColor: '#0052B2',
-  },
-  buttonMsg: {
-    fontSize: 20,
-    color: 'white',
+  name: {
+    color: '#0052B2',
   },
 };

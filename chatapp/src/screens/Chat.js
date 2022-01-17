@@ -1,26 +1,35 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Keyboard,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import {getDBdata, registrationDB} from '../api/Database';
 import ChatMsg from '../components/Msg';
 
 const Chat = ({route}) => {
   const {name, firstDBdata} = route.params;
+  const sortedDBdata = firstDBdata.reverse();
   const [inputContent, setInputContent] = useState('');
-  const [msg, setMsg] = useState(firstDBdata);
+  const [msg, setMsg] = useState([sortedDBdata]);
 
   const getNewMsg = async () => {
     const newMsg = await getDBdata();
-    setMsg(newMsg);
+    const sortNewMsg = newMsg.reverse();
+    setMsg(sortNewMsg);
   };
 
   const buttonMove = () => {
     registrationDB(inputContent, name);
     setInputContent('');
+    Keyboard.dismiss();
   };
 
   useEffect(() => {
     if (inputContent === '') {
-      console.log('effect');
       getNewMsg();
     }
   }, [inputContent]);
@@ -36,33 +45,67 @@ const Chat = ({route}) => {
 
   return (
     <View style={styles.wrapper}>
-      {msg !== firstDBdata ? msgRope(msg) : msgRope(firstDBdata)}
-      <TextInput onChangeText={setInputContent} value={inputContent} />
-      <TouchableOpacity onPress={() => buttonMove()}>
-        <Text>Send</Text>
-      </TouchableOpacity>
+      <ScrollView>{msgRope(msg)}</ScrollView>
+      <View style={styles.sendArea}>
+        <TextInput
+          onChangeText={setInputContent}
+          value={inputContent}
+          autoCapitalize="none"
+          style={styles.inputArea}
+          keyboardType="phone-pad"
+        />
+        <TouchableOpacity onPress={() => buttonMove()} style={styles.button}>
+          <View style={styles.buttonBack} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 export default Chat;
+
+const {height} = Dimensions.get('window');
 
 const styles = {
   wrapper: {
     backgroundColor: '#81CFFF',
     marginLeft: 10,
     marginRight: 10,
+    marginVertical: 10,
+    height: 770,
+    borderRadius: 10,
   },
-  title: {
-    backgroundColor: '#0052B2',
-    color: 'white',
-    fontSize: 30,
-    margin: 'auto',
+  sendArea: {
+    flexDirection: 'row',
+    marginLeft: 10,
+    alignItems: 'flex-end',
+    marginTop: 20,
+    paddingBottom: 10,
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: '#81CFFF',
+    // height: height * 0.1,
   },
-  button: {
-    backgroundColor: '#0052B2',
-  },
-  buttonMsg: {
+  inputArea: {
+    backgroundColor: 'white',
+    color: 'black',
     fontSize: 20,
-    color: 'white',
+    borderRadius: 10,
+    width: 320,
+    height: 70,
+    marginRight: 10,
+  },
+  buttonBack: {
+    backgroundColor: 'transparent',
+    width: 0,
+    height: 0,
+    borderStyle: 'solid',
+    borderLeftWidth: 15,
+    borderRightWidth: 15,
+    borderBottomWidth: 30,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    transform: [{rotate: '90deg'}],
+    borderBottomColor: '#0052B2',
+    marginLeft: 10,
   },
 };

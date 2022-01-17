@@ -61,6 +61,7 @@ const styles = {
     marginRight: 10,
     marginVertical: 10,
     height: 770,
+    borderRadius: 10,
   },
   title: {
     backgroundColor: '#0052B2',
