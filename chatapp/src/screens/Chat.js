@@ -45,7 +45,9 @@ const Chat = ({route}) => {
 
   return (
     <View style={styles.wrapper}>
-      <ScrollView>{msgRope(msg)}</ScrollView>
+      <View style={styles.scroll}>
+        <ScrollView>{msgRope(msg)}</ScrollView>
+      </View>
       <View style={styles.sendArea}>
         <TextInput
           onChangeText={setInputContent}
@@ -74,24 +76,26 @@ const styles = {
     height: 770,
     borderRadius: 10,
   },
+  scroll: {
+    height: '85%',
+  },
   sendArea: {
     flexDirection: 'row',
-    marginLeft: 10,
+    marginHorizontal: 20,
     alignItems: 'flex-end',
-    marginTop: 20,
     paddingBottom: 10,
     position: 'absolute',
     bottom: 0,
+    height: '15%',
     backgroundColor: '#81CFFF',
-    // height: height * 0.1,
   },
   inputArea: {
     backgroundColor: 'white',
     color: 'black',
     fontSize: 20,
     borderRadius: 10,
-    width: 320,
-    height: 70,
+    width: '80%',
+    height: '100%',
     marginRight: 10,
   },
   buttonBack: {
@@ -106,6 +110,6 @@ const styles = {
     borderRightColor: 'transparent',
     transform: [{rotate: '90deg'}],
     borderBottomColor: '#0052B2',
-    marginLeft: 10,
+    marginLeft: 30,
   },
 };
