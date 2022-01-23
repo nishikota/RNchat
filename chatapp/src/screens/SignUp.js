@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {getDBdata, userLogin, checkUserLogin} from '../api/database';
+import {getDBdata} from '../api/database';
+import {userRegistration, checkUserLogin, logout} from '../api/database';
 
 const welcomeMsg = name => {
   if (name) {
@@ -21,31 +22,21 @@ const welcomeMsg = name => {
   }
 };
 
-const Top = ({navigation}) => {
+const SignUp = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const buttonMove = async () => {
-    const firstDBdata = await getDBdata();
-    if (firstDBdata) {
-      navigation.navigate('Chat', {
-        name: name,
-        firstDBdata: firstDBdata,
-        email: email,
-      });
-    }
-  };
-  const loginButton = async () => {
-    console.log('LoginMove');
-    userLogin(email, password);
+
+  const SignUpButton = async () => {
+    console.log('signUpMove');
+    userRegistration(email, password);
     const userState = await checkUserLogin();
     console.log('check', userState);
     if (userState) {
-      // ここでエラー処理が必要、登録済みでもエラーは帰らない。
       console.log('return userState:', userState);
       const firstDBdata = await getDBdata();
       if (firstDBdata) {
-        console.log('moving display:');
+        console.log('moving display:', firstDBdata);
         navigation.navigate('Chat', {
           name: name,
           firstDBdata: firstDBdata,
@@ -74,7 +65,7 @@ const Top = ({navigation}) => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <Text style={styles.inputText}>Pass</Text>
+        <Text style={styles.inputText}>Password</Text>
         <TextInput
           onChangeText={setPassword}
           value={password}
@@ -82,31 +73,17 @@ const Top = ({navigation}) => {
         />
       </View>
       {welcomeMsg(name)}
-      {name ? (
-        <TouchableOpacity onPress={() => buttonMove()} style={styles.button}>
-          <Text style={styles.buttonMsg}>Enter</Text>
-        </TouchableOpacity>
-      ) : (
-        <Text style={styles.buttonMsg}>Tell me your name !</Text>
-      )}
-      <Text style={styles.buttonMsg}>
-        if you don't have account, push under button
-      </Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SignUp')}
-        style={styles.button}>
+      <TouchableOpacity onPress={() => SignUpButton()} style={styles.button}>
         <Text style={styles.buttonMsg}>SignUp</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => loginButton(email, password)}
-        style={styles.button}>
-        <Text style={styles.buttonMsg}>Login</Text>
+      <TouchableOpacity onPress={() => logout()} style={styles.button}>
+        <Text style={styles.buttonMsg}>logout</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Top;
+export default SignUp;
 
 const styles = {
   wrapper: {

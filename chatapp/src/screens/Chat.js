@@ -7,11 +7,11 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import {getDBdata, registrationDB} from '../api/Database';
+import {getDBdata, registrationDB} from '../api/database';
 import ChatMsg from '../components/Msg';
 
 const Chat = ({route}) => {
-  const {name, firstDBdata} = route.params;
+  const {name, firstDBdata, email} = route.params;
   const sortedDBdata = firstDBdata.reverse();
   const [inputContent, setInputContent] = useState('');
   const [msg, setMsg] = useState([sortedDBdata]);
@@ -23,7 +23,8 @@ const Chat = ({route}) => {
   };
 
   const buttonMove = () => {
-    registrationDB(inputContent, name);
+    registrationDB(inputContent, name, email);
+    // 引数でEmailも入れる必要がある
     setInputContent('');
     Keyboard.dismiss();
   };
