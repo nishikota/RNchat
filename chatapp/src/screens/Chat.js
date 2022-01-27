@@ -5,26 +5,42 @@ import {
   TouchableOpacity,
   Keyboard,
   ScrollView,
-  Dimensions,
 } from 'react-native';
-import {getDBdata, registrationDB} from '../api/database';
+import {
+  getDBdata,
+  registrationDB,
+  checkUserLogin,
+  getDBUser,
+} from '../api/database';
 import ChatMsg from '../components/Msg';
 
-const Chat = ({route}) => {
-  const {name, firstDBdata, email} = route.params;
-  const sortedDBdata = firstDBdata.reverse();
+const Chat = () => {
   const [inputContent, setInputContent] = useState('');
-  const [msg, setMsg] = useState([sortedDBdata]);
+  const [msg, setMsg] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const user = checkUserLogin();
+    setUserEmail(user.email);
+  }, []);
+  useEffect(() => {
+    const nameHandler = async () => {
+      const userName = await getDBUser(userEmail);
+      setName(userName[0].name);
+    };
+    if (userEmail !== '') {
+      nameHandler();
+    }
+  }, [userEmail]);
 
   const getNewMsg = async () => {
     const newMsg = await getDBdata();
     const sortNewMsg = newMsg.reverse();
     setMsg(sortNewMsg);
   };
-
   const buttonMove = () => {
-    registrationDB(inputContent, name, email);
-    // 引数でEmailも入れる必要がある
+    registrationDB(name, inputContent, userEmail);
     setInputContent('');
     Keyboard.dismiss();
   };
@@ -37,9 +53,9 @@ const Chat = ({route}) => {
   const msgRope = data => {
     return (
       <View>
-        {data.map((value, i) => (
-          <ChatMsg value={value} key={i} />
-        ))}
+        {data !== ''
+          ? data.map((value, i) => <ChatMsg value={value} key={i} />)
+          : null}
       </View>
     );
   };
@@ -65,8 +81,6 @@ const Chat = ({route}) => {
   );
 };
 export default Chat;
-
-const {height} = Dimensions.get('window');
 
 const styles = {
   wrapper: {

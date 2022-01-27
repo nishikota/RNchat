@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 export const getDBdata = async () => {
+  console.log('getDB');
   let refData = [];
   await firestore()
     .collection('chat')
@@ -15,22 +16,46 @@ export const getDBdata = async () => {
     });
   return refData;
 };
+export const getDBUser = async email => {
+  console.log('userDB', email);
+  let refData = [];
+  await firestore()
+    .collection('users')
+    .where('email', '==', email)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        refData.push(doc.data());
+        console.log(doc);
+      });
+    });
+  return refData;
+};
 
-export const registrationDB = (msg, name, email) => {
+export const registrationDB = (name, msg, email) => {
   const nowTime = new Date().toLocaleString();
   firestore().collection('chat').add({
     sendTime: nowTime,
-    msg: msg,
     name: name,
+    msg: msg,
     email: email,
   });
 };
 
-export const userRegistration = (email, password) => {
+const registrationUser = (name, email) => {
+  console.log('userRegister');
+  firestore().collection('users').add({
+    name: name,
+    email: email,
+  });
+};
+export const userRegistration = (name, email, password) => {
   auth()
     .createUserWithEmailAndPassword(email, password)
     .then(() => {
+      registrationUser(name, email);
       console.log(`${email} registration success`);
+      return 'success';
     })
     .catch(error => {
       if (error.code === 'auth/email-already-in-use') {
@@ -64,6 +89,5 @@ export const logout = () => {
 
 export const checkUserLogin = () => {
   const user = auth().currentUser;
-  // console.log(user);
   return user;
 };

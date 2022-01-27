@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {getDBdata} from '../api/database';
-import {userRegistration, checkUserLogin, logout} from '../api/database';
+import {userRegistration, logout} from '../api/database';
+// import auth from '@react-native-firebase/auth';
+
+// なぜかTopのuseEffectが発火する
 
 const welcomeMsg = name => {
   if (name) {
@@ -22,28 +24,16 @@ const welcomeMsg = name => {
   }
 };
 
-const SignUp = ({navigation}) => {
+const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const SignUpButton = async () => {
     console.log('signUpMove');
-    userRegistration(email, password);
-    const userState = await checkUserLogin();
-    console.log('check', userState);
-    if (userState) {
-      console.log('return userState:', userState);
-      const firstDBdata = await getDBdata();
-      if (firstDBdata) {
-        console.log('moving display:', firstDBdata);
-        navigation.navigate('Chat', {
-          name: name,
-          firstDBdata: firstDBdata,
-          email: email,
-        });
-      }
-    }
+    userRegistration(name, email, password);
+    console.log('moving display:');
+    // await navigation.navigate('Chat');
   };
   return (
     <View style={styles.wrapper}>
@@ -54,6 +44,7 @@ const SignUp = ({navigation}) => {
           onChangeText={setName}
           value={name}
           style={styles.inputArea}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.inputWrapper}>
@@ -62,6 +53,7 @@ const SignUp = ({navigation}) => {
           onChangeText={setEmail}
           value={email}
           style={styles.inputArea}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.inputWrapper}>
@@ -70,6 +62,7 @@ const SignUp = ({navigation}) => {
           onChangeText={setPassword}
           value={password}
           style={styles.inputArea}
+          autoCapitalize="none"
         />
       </View>
       {welcomeMsg(name)}

@@ -1,76 +1,53 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {getDBdata, userLogin, checkUserLogin} from '../api/database';
-
-const welcomeMsg = name => {
-  if (name) {
-    return (
-      <View style={styles.welcomeMsgWrapper}>
-        <Text style={styles.welcomeMsgName}>{`OK ${name} !`}</Text>
-        <Text style={styles.welcomeMsgFirst}>Let's Talk !</Text>
-        <Text style={styles.welcomeMsgSecond}>Have fun !</Text>
-      </View>
-    );
-  } else {
-    return (
-      <View>
-        <Text />
-        <Text />
-      </View>
-    );
-  }
-};
+import {userLogin, logout} from '../api/database';
+import auth from '@react-native-firebase/auth';
 
 const Top = ({navigation}) => {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const buttonMove = async () => {
-    const firstDBdata = await getDBdata();
-    if (firstDBdata) {
-      navigation.navigate('Chat', {
-        name: name,
-        firstDBdata: firstDBdata,
-        email: email,
-      });
+  const [loginSwitch, setLoginSwitch] = useState(true);
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(async user => {
+      if (user) {
+        console.log('true');
+        setLoginSwitch(true);
+        navigation.navigate('Chat');
+      } else {
+        setLoginSwitch(false);
+      }
+    });
+    return () => {
+      subscriber();
+    };
+  });
+
+  const firstMove = async () => {
+    console.log('firstMove');
+    if (loginSwitch === true) {
+      console.log('moving display');
+      navigation.navigate('Chat');
     }
   };
   const loginButton = async () => {
-    console.log('LoginMove');
-    userLogin(email, password);
-    const userState = await checkUserLogin();
-    console.log('check', userState);
-    if (userState) {
-      // ここでエラー処理が必要、登録済みでもエラーは帰らない。
-      console.log('return userState:', userState);
-      const firstDBdata = await getDBdata();
-      if (firstDBdata) {
-        console.log('moving display:');
-        navigation.navigate('Chat', {
-          name: name,
-          firstDBdata: firstDBdata,
-          email: email,
-        });
-      }
+    if (loginSwitch === false) {
+      console.log('LoginMove');
+      userLogin(email, password);
+      await firstMove();
     }
   };
+
   return (
     <View style={styles.wrapper}>
       <Text style={styles.title}>Who are you ?</Text>
-      <View style={styles.inputWrapper}>
-        <Text style={styles.inputText}>Name</Text>
-        <TextInput
-          onChangeText={setName}
-          value={name}
-          style={styles.inputArea}
-        />
-      </View>
       <View style={styles.inputWrapper}>
         <Text style={styles.inputText}>Email</Text>
         <TextInput
           onChangeText={setEmail}
           value={email}
           style={styles.inputArea}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.inputWrapper}>
@@ -79,19 +56,9 @@ const Top = ({navigation}) => {
           onChangeText={setPassword}
           value={password}
           style={styles.inputArea}
+          autoCapitalize="none"
         />
       </View>
-      {welcomeMsg(name)}
-      {name ? (
-        <TouchableOpacity onPress={() => buttonMove()} style={styles.button}>
-          <Text style={styles.buttonMsg}>Enter</Text>
-        </TouchableOpacity>
-      ) : (
-        <Text style={styles.buttonMsg}>Tell me your name !</Text>
-      )}
-      <Text style={styles.buttonMsg}>
-        if you don't have account, push under button
-      </Text>
       <TouchableOpacity
         onPress={() => navigation.navigate('SignUp')}
         style={styles.button}>
@@ -101,6 +68,9 @@ const Top = ({navigation}) => {
         onPress={() => loginButton(email, password)}
         style={styles.button}>
         <Text style={styles.buttonMsg}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => logout()} style={styles.button}>
+        <Text style={styles.buttonMsg}>logout</Text>
       </TouchableOpacity>
     </View>
   );
