@@ -1,14 +1,17 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const ChatMsg = ({value}) => {
+const ChatMsg = ({value, email}) => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.time}>
         {value.sendTime}
-        <Text style={styles.name}>{value.name}</Text>
+        <Text style={value.email !== email ? styles.name : styles.myName}>
+          {value.name}
+        </Text>
       </Text>
-      <View style={styles.msgWrapper}>
+      <View
+        style={value.email !== email ? styles.msgWrapper : styles.myMsgWrapper}>
         <Text style={styles.msgContent}>{value.msg}</Text>
       </View>
     </View>
@@ -24,10 +27,21 @@ const styles = {
   },
   msgWrapper: {
     backgroundColor: '#F89C86',
-    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
     borderWidth: 1,
     borderColor: '#0052B2',
+    marginRight: '20%',
+  },
+  myMsgWrapper: {
+    backgroundColor: '#92F5B1',
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderWidth: 1,
+    borderColor: '#0052B2',
+    marginLeft: '20%',
   },
   msgContent: {
     color: 'black',
@@ -40,5 +54,8 @@ const styles = {
   },
   name: {
     color: '#0052B2',
+  },
+  myName: {
+    color: '#F5273F',
   },
 };

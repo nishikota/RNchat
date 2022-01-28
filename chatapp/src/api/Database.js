@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 export const getDBdata = async () => {
-  console.log('getDB');
   let refData = [];
   await firestore()
     .collection('chat')
@@ -17,7 +16,6 @@ export const getDBdata = async () => {
   return refData;
 };
 export const getDBUser = async email => {
-  console.log('userDB', email);
   let refData = [];
   await firestore()
     .collection('users')
@@ -26,7 +24,6 @@ export const getDBUser = async email => {
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
         refData.push(doc.data());
-        console.log(doc);
       });
     });
   return refData;
@@ -43,7 +40,6 @@ export const registrationDB = (name, msg, email) => {
 };
 
 const registrationUser = (name, email) => {
-  console.log('userRegister');
   firestore().collection('users').add({
     name: name,
     email: email,
@@ -74,17 +70,13 @@ export const userRegistration = (name, email, password) => {
 export const userLogin = (email, password) => {
   auth()
     .signInWithEmailAndPassword(email, password)
-    .then(() => {
-      console.log('signIn success');
-    });
+    .then(() => {});
 };
 
 export const logout = () => {
   auth()
     .signOut()
-    .then(() => {
-      console.log('logout');
-    });
+    .then(() => {});
 };
 
 export const checkUserLogin = () => {

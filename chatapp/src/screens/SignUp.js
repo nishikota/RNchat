@@ -1,11 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {userRegistration, logout} from '../api/database';
-// import auth from '@react-native-firebase/auth';
+import {userRegistration} from '../api/database';
 
-// なぜかTopのuseEffectが発火する
-
-const welcomeMsg = name => {
+const welcomeMsg = (name, email, password) => {
   if (name) {
     return (
       <View style={styles.welcomeMsgWrapper}>
@@ -30,10 +27,10 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   const SignUpButton = async () => {
-    console.log('signUpMove');
     userRegistration(name, email, password);
-    console.log('moving display:');
-    // await navigation.navigate('Chat');
+    setName('');
+    setEmail('');
+    setPassword('');
   };
   return (
     <View style={styles.wrapper}>
@@ -57,21 +54,21 @@ const SignUp = () => {
         />
       </View>
       <View style={styles.inputWrapper}>
-        <Text style={styles.inputText}>Password</Text>
+        <Text style={styles.inputText}>Pass</Text>
         <TextInput
           onChangeText={setPassword}
           value={password}
           style={styles.inputArea}
           autoCapitalize="none"
+          secureTextEntry={true}
         />
       </View>
       {welcomeMsg(name)}
-      <TouchableOpacity onPress={() => SignUpButton()} style={styles.button}>
-        <Text style={styles.buttonMsg}>SignUp</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => logout()} style={styles.button}>
-        <Text style={styles.buttonMsg}>logout</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonWrapper}>
+        <TouchableOpacity onPress={() => SignUpButton()} style={styles.button}>
+          <Text style={styles.buttonMsg}>SignUp</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -93,11 +90,17 @@ const styles = {
     fontSize: 30,
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginVertical: 20,
-    width: '80%',
+    marginTop: 30,
+    marginBottom: 50,
+    width: '90%',
     textAlign: 'center',
     borderRadius: 20,
     overflow: 'hidden',
+  },
+  buttonWrapper: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
   },
   button: {
     backgroundColor: '#0052B2',
@@ -115,8 +118,9 @@ const styles = {
   },
   inputWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 20,
+    justifyContent: 'space-between',
+    marginVertical: 30,
+    marginHorizontal: 20,
   },
   inputText: {
     fontSize: 32,

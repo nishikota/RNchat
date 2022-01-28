@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   TextInput,
@@ -54,7 +54,9 @@ const Chat = () => {
     return (
       <View>
         {data !== ''
-          ? data.map((value, i) => <ChatMsg value={value} key={i} />)
+          ? data.map((value, i) => (
+              <ChatMsg value={value} key={i} email={userEmail} />
+            ))
           : null}
       </View>
     );
@@ -93,6 +95,8 @@ const styles = {
   },
   scroll: {
     height: '85%',
+    paddingVertical: 5,
+    marginVertical: 10,
   },
   sendArea: {
     flexDirection: 'row',

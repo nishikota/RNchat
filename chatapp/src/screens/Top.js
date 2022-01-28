@@ -24,23 +24,22 @@ const Top = ({navigation}) => {
   });
 
   const firstMove = async () => {
-    console.log('firstMove');
     if (loginSwitch === true) {
-      console.log('moving display');
       navigation.navigate('Chat');
     }
   };
   const loginButton = async () => {
     if (loginSwitch === false) {
-      console.log('LoginMove');
       userLogin(email, password);
+      setEmail('');
+      setPassword('');
       await firstMove();
     }
   };
 
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.title}>Who are you ?</Text>
+      <Text style={styles.title}>Do you have account ?</Text>
       <View style={styles.inputWrapper}>
         <Text style={styles.inputText}>Email</Text>
         <TextInput
@@ -57,21 +56,26 @@ const Top = ({navigation}) => {
           value={password}
           style={styles.inputArea}
           autoCapitalize="none"
+          secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SignUp')}
-        style={styles.button}>
-        <Text style={styles.buttonMsg}>SignUp</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => loginButton(email, password)}
-        style={styles.button}>
-        <Text style={styles.buttonMsg}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => logout()} style={styles.button}>
-        <Text style={styles.buttonMsg}>logout</Text>
-      </TouchableOpacity>
+      <View style={styles.allButtonWrapper}>
+        <View style={styles.inButtonWrapper}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SignUp')}
+            style={styles.button}>
+            <Text style={styles.buttonMsg}>SignUp</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => loginButton(email, password)}
+            style={styles.button}>
+            <Text style={styles.buttonMsg}>Login</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={() => logout()} style={styles.button}>
+          <Text style={styles.buttonMsg}>logout</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -93,18 +97,28 @@ const styles = {
     fontSize: 30,
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginVertical: 20,
-    width: '80%',
+    marginTop: 30,
+    marginBottom: 50,
+    width: '90%',
     textAlign: 'center',
     borderRadius: 20,
     overflow: 'hidden',
+  },
+  allButtonWrapper: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+  },
+  inButtonWrapper: {
+    flexDirection: 'row',
+    marginTop: 50,
   },
   button: {
     backgroundColor: '#0052B2',
     width: '30%',
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginVertical: 15,
+    marginVertical: 30,
     borderRadius: 20,
     padding: 3,
   },
@@ -115,8 +129,9 @@ const styles = {
   },
   inputWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 20,
+    justifyContent: 'space-between',
+    marginVertical: 30,
+    marginHorizontal: 20,
   },
   inputText: {
     fontSize: 32,
@@ -126,30 +141,7 @@ const styles = {
     backgroundColor: 'white',
     fontSize: 25,
     borderWidth: 1,
-    width: '50%',
+    width: '60%',
     padding: 2,
-  },
-  welcomeMsgWrapper: {
-    marginVertical: 30,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  welcomeMsgName: {
-    color: 'white',
-    fontSize: 40,
-    marginBottom: 20,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  welcomeMsgFirst: {
-    color: 'white',
-    fontSize: 30,
-    marginLeft: 70,
-    width: '80%',
-  },
-  welcomeMsgSecond: {
-    color: 'white',
-    fontSize: 30,
-    marginLeft: 180,
   },
 };
