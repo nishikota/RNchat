@@ -23,14 +23,16 @@ const ChatMsg = ({value, email, setDeleteSwitch}) => {
   };
   const modal = () => {
     return (
-      <View>
-        <Text>このメッセージを削除しますか？</Text>
-        <TouchableOpacity onPress={() => deleteMoving(msgId)}>
-          <Text>はい</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setModalSwitch(false)}>
-          <Text>いいえ</Text>
-        </TouchableOpacity>
+      <View style={styles.modalWrapper}>
+        <Text style={styles.text}>このメッセージを削除しますか？</Text>
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity onPress={() => deleteMoving(msgId)}>
+            <Text style={styles.text}>はい</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalSwitch(false)}>
+            <Text style={styles.text}>いいえ</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -61,6 +63,20 @@ const styles = {
   wrapper: {
     marginHorizontal: 20,
     marginVertical: 10,
+  },
+  modalWrapper: {
+    marginLeft: '20%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 5,
+    marginTop: 5,
+  },
+  text: {
+    marginHorizontal: 10,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   msgWrapper: {
     backgroundColor: '#F89C86',

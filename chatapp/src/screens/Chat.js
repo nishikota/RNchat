@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Keyboard,
   ScrollView,
+  Text,
 } from 'react-native';
 import {
   getDBdata,
@@ -13,6 +14,7 @@ import {
   getDBUser,
 } from '../api/database';
 import ChatMsg from '../components/Msg';
+import UserModal from '../components/UserModal';
 
 const Chat = () => {
   const [inputContent, setInputContent] = useState('');
@@ -20,6 +22,7 @@ const Chat = () => {
   const [userEmail, setUserEmail] = useState('');
   const [name, setName] = useState('');
   const [deleteSwitch, setDeleteSwitch] = useState(false);
+  const [userState, setUserState] = useState(false);
 
   useEffect(() => {
     const user = checkUserLogin();
@@ -83,9 +86,26 @@ const Chat = () => {
       </View>
     );
   };
+  const modalHandler = () => {
+    if (userState === false) {
+      setUserState(true);
+    } else {
+      setUserState(false);
+    }
+  };
 
   return (
     <View style={styles.wrapper}>
+      <View>
+        <TouchableOpacity
+          onPress={() => modalHandler()}
+          style={styles.statusButton}>
+          <Text style={styles.statusText}>MY PROFILE</Text>
+        </TouchableOpacity>
+        {userState === true ? (
+          <UserModal name={name} email={userEmail} />
+        ) : null}
+      </View>
       <View style={styles.scroll}>
         <ScrollView>{msgRope(msg)}</ScrollView>
       </View>
@@ -115,10 +135,22 @@ const styles = {
     height: 770,
     borderRadius: 10,
   },
+  statusButton: {
+    position: 'absolute',
+    right: 5,
+    backgroundColor: '#0052B2',
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  statusText: {
+    color: 'white',
+    margin: 5,
+    fontSize: 15,
+  },
   scroll: {
-    height: '83%',
+    height: '81%',
     paddingVertical: 5,
-    marginTop: 10,
+    marginTop: 30,
   },
   sendArea: {
     flexDirection: 'row',

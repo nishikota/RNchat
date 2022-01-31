@@ -71,9 +71,6 @@ const Top = ({navigation}) => {
             <Text style={styles.buttonMsg}>Login</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => logout()} style={styles.button}>
-          <Text style={styles.buttonMsg}>logout</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
