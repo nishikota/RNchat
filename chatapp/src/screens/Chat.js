@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -19,10 +19,14 @@ const Chat = () => {
   const [msg, setMsg] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [name, setName] = useState('');
+  const [deleteSwitch, setDeleteSwitch] = useState(false);
 
   useEffect(() => {
     const user = checkUserLogin();
     setUserEmail(user.email);
+    return () => {
+      checkUserLogin;
+    };
   }, []);
   useEffect(() => {
     const nameHandler = async () => {
@@ -32,6 +36,9 @@ const Chat = () => {
     if (userEmail !== '') {
       nameHandler();
     }
+    return () => {
+      nameHandler;
+    };
   }, [userEmail]);
 
   const getNewMsg = async () => {
@@ -44,18 +51,33 @@ const Chat = () => {
     setInputContent('');
     Keyboard.dismiss();
   };
+  useEffect(() => {
+    if (deleteSwitch === true) {
+      getNewMsg();
+      setDeleteSwitch(false);
+    }
+  }, [deleteSwitch]);
 
   useEffect(() => {
     if (inputContent === '') {
       getNewMsg();
     }
+    return () => {
+      getNewMsg;
+    };
   }, [inputContent]);
+
   const msgRope = data => {
     return (
       <View>
         {data !== ''
           ? data.map((value, i) => (
-              <ChatMsg value={value} key={i} email={userEmail} />
+              <ChatMsg
+                value={value}
+                key={i}
+                email={userEmail}
+                setDeleteSwitch={setDeleteSwitch}
+              />
             ))
           : null}
       </View>
@@ -94,9 +116,9 @@ const styles = {
     borderRadius: 10,
   },
   scroll: {
-    height: '85%',
+    height: '83%',
     paddingVertical: 5,
-    marginVertical: 10,
+    marginTop: 10,
   },
   sendArea: {
     flexDirection: 'row',

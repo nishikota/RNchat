@@ -11,7 +11,6 @@ const Top = ({navigation}) => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(async user => {
       if (user) {
-        console.log('true');
         setLoginSwitch(true);
         navigation.navigate('Chat');
       } else {

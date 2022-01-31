@@ -1,19 +1,56 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {useState} from 'react';
+import {getMsgId, deleteMsg} from '../api/database';
 
-const ChatMsg = ({value, email}) => {
+const ChatMsg = ({value, email, setDeleteSwitch}) => {
+  const [modalSwitch, setModalSwitch] = useState(false);
+  const [msgId, setMsgId] = useState('');
+
+  const handleModal = async () => {
+    if (value.email !== email) {
+      setModalSwitch(false);
+    } else {
+      setModalSwitch(true);
+      const id = await getMsgId(value);
+      setMsgId(id);
+    }
+  };
+  const deleteMoving = async () => {
+    await deleteMsg(msgId);
+    setDeleteSwitch(true);
+    setModalSwitch(false);
+  };
+  const modal = () => {
+    return (
+      <View>
+        <Text>このメッセージを削除しますか？</Text>
+        <TouchableOpacity onPress={() => deleteMoving(msgId)}>
+          <Text>はい</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalSwitch(false)}>
+          <Text>いいえ</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.time}>
-        {value.sendTime}
-        <Text style={value.email !== email ? styles.name : styles.myName}>
-          {value.name}
+      <TouchableOpacity onLongPress={() => handleModal()}>
+        <Text style={value.email !== email ? styles.time : styles.myTime}>
+          {value.sendTime}
+          <Text style={value.email !== email ? styles.name : styles.myName}>
+            {value.name}
+          </Text>
         </Text>
-      </Text>
-      <View
-        style={value.email !== email ? styles.msgWrapper : styles.myMsgWrapper}>
-        <Text style={styles.msgContent}>{value.msg}</Text>
-      </View>
+        <View
+          style={
+            value.email !== email ? styles.msgWrapper : styles.myMsgWrapper
+          }>
+          <Text style={styles.msgContent}>{value.msg}</Text>
+        </View>
+      </TouchableOpacity>
+      {modalSwitch === true ? modal() : null}
     </View>
   );
 };
@@ -51,6 +88,10 @@ const styles = {
   },
   time: {
     color: 'white',
+  },
+  myTime: {
+    color: 'white',
+    marginLeft: '20%',
   },
   name: {
     color: '#0052B2',

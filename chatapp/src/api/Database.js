@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 export const getDBdata = async () => {
+  console.log('getData');
   let refData = [];
   await firestore()
     .collection('chat')
@@ -16,6 +17,7 @@ export const getDBdata = async () => {
   return refData;
 };
 export const getDBUser = async email => {
+  console.log('getUser');
   let refData = [];
   await firestore()
     .collection('users')
@@ -30,6 +32,7 @@ export const getDBUser = async email => {
 };
 
 export const registrationDB = (name, msg, email) => {
+  console.log('registrationDB');
   const nowTime = new Date().toLocaleString();
   firestore().collection('chat').add({
     sendTime: nowTime,
@@ -39,13 +42,42 @@ export const registrationDB = (name, msg, email) => {
   });
 };
 
+export const getMsgId = async value => {
+  console.log('getId');
+  let refData;
+  await firestore()
+    .collection('chat')
+    .where('email', '==', value.email)
+    .where('sendTime', '==', value.sendTime)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        refData = doc.id;
+      });
+    });
+  return refData;
+};
+
+export const deleteMsg = async id => {
+  console.log('delete');
+  await firestore()
+    .collection('chat')
+    .doc(id)
+    .delete()
+    .then(() => {
+      console.log('delete complete', id);
+    });
+};
+
 const registrationUser = (name, email) => {
+  console.log('registrationUser');
   firestore().collection('users').add({
     name: name,
     email: email,
   });
 };
 export const userRegistration = (name, email, password) => {
+  console.log('createUser');
   auth()
     .createUserWithEmailAndPassword(email, password)
     .then(() => {
@@ -68,18 +100,21 @@ export const userRegistration = (name, email, password) => {
 };
 
 export const userLogin = (email, password) => {
+  console.log('login');
   auth()
     .signInWithEmailAndPassword(email, password)
     .then(() => {});
 };
 
 export const logout = () => {
+  console.log('logout');
   auth()
     .signOut()
     .then(() => {});
 };
 
 export const checkUserLogin = () => {
+  console.log('loginCheck');
   const user = auth().currentUser;
   return user;
 };
