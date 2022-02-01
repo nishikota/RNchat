@@ -3,19 +3,19 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {logout} from '../api/database';
 
 const UserModal = value => {
-  const {name, email} = value;
+  const {name, email, setLoginState} = value;
+  const buttonMove = () => {
+    logout();
+    setLoginState(false);
+  };
   return (
     <View style={styles.wrapper}>
-      <View style={styles.status}>
-        <Text style={styles.statusText}>
-          Name: <Text style={styles.user}>{name}</Text>
-        </Text>
-        <Text style={styles.statusText}>
-          Email: <Text style={styles.user}>{email}</Text>
-        </Text>
+      <View>
+        <Text style={styles.statusText}>Name: {name}</Text>
+        <Text style={styles.statusText}>Email: {email}</Text>
       </View>
-      <View style={styles.buttonWrapper}>
-        <TouchableOpacity onPress={() => logout()} style={styles.button}>
+      <View>
+        <TouchableOpacity onPress={() => buttonMove()} style={styles.button}>
           <Text style={styles.buttonMsg}>logout</Text>
         </TouchableOpacity>
       </View>
@@ -27,24 +27,18 @@ export default UserModal;
 
 const styles = {
   wrapper: {
-    width: '60%',
+    width: '65%',
     backgroundColor: '#0052B2',
     borderRadius: 10,
     padding: 5,
     marginHorizontal: 20,
-    marginTop: 5,
-  },
-  buttonWrapper: {},
-  status: {},
-  user: {
-    color: 'white',
   },
   statusText: {
-    color: 'black',
+    color: 'white',
     fontSize: 20,
   },
   button: {
-    width: '90%',
+    width: '91%',
     borderRadius: 20,
     marginLeft: 'auto',
     marginRight: 'auto',

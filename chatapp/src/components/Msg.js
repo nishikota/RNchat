@@ -61,7 +61,7 @@ export default ChatMsg;
 
 const styles = {
   wrapper: {
-    marginHorizontal: 20,
+    marginHorizontal: 25,
     marginVertical: 10,
   },
   modalWrapper: {

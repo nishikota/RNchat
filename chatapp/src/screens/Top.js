@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {userLogin, logout} from '../api/database';
+import {userLogin} from '../api/database';
 import auth from '@react-native-firebase/auth';
 
 const Top = ({navigation}) => {
@@ -135,7 +135,7 @@ const styles = {
   },
   inputArea: {
     backgroundColor: 'white',
-    fontSize: 25,
+    fontSize: 20,
     borderWidth: 1,
     width: '60%',
     padding: 2,

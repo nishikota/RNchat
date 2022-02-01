@@ -18,7 +18,12 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerBackVisible: false,
+          headerTintColor: 'white',
+          headerStyle: {backgroundColor: '#81CFFF'},
+        }}>
         <Stack.Screen name="Login" component={Top} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="SignUp" component={SignUp} />

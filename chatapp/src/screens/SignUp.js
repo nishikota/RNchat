@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 import {userRegistration} from '../api/database';
 
-const welcomeMsg = (name, email, password) => {
+const welcomeMsg = name => {
   if (name) {
     return (
       <View style={styles.welcomeMsgWrapper}>
@@ -128,7 +128,7 @@ const styles = {
   },
   inputArea: {
     backgroundColor: 'white',
-    fontSize: 25,
+    fontSize: 20,
     borderWidth: 1,
     width: '50%',
     padding: 2,
