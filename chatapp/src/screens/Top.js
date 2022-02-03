@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {userLogin} from '../api/database';
+import {userLogin} from '../api/Database';
 import auth from '@react-native-firebase/auth';
 
 const Top = ({navigation}) => {

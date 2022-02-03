@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-import {logout} from '../api/database';
+import {logout} from '../api/Database';
 
 const UserModal = value => {
   const {name, email, setLoginState} = value;

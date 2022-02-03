@@ -12,7 +12,7 @@ import {
   registrationDB,
   checkUserLogin,
   getDBUser,
-} from '../api/database';
+} from '../api/Database';
 import ChatMsg from '../components/Msg';
 import UserModal from '../components/UserModal';
 

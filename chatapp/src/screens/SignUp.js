@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
-import {userRegistration} from '../api/database';
+import {userRegistration} from '../api/Database';
 
 const welcomeMsg = name => {
   if (name) {

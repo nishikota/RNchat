@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
-import {getMsgId, deleteMsg} from '../api/database';
+import {getMsgId, deleteMsg} from '../api/Database';
 
 const ChatMsg = ({value, email, setDeleteSwitch}) => {
   const [modalSwitch, setModalSwitch] = useState(false);
